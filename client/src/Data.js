@@ -1,11 +1,9 @@
 //Use the REST API
-import config from './config';
-
 export default class Data {
   // api() method; used to make the GET and POST requests to the REST API
   // initialize requiresAuth and credentials params with default values in case no values or "undefined" gets passed for either
   api(path, method = 'GET', body = null) { //body contains all any data associated with the request
-    const url = config.apiBaseUrl + path; //localhost:5000/api/[path]
+    const url = 'http://localhost:5000/api' + path; //localhost:5000/api/[path]
 
     //configuration (options) object that lets you control a number of different settings you can apply to the request
     const options = {
@@ -20,32 +18,38 @@ export default class Data {
       options.body = JSON.stringify(body); //stringify the options body
     }
 
-    // //check if authentication is required
-    // if (requiresAuth) { //if making a request to a protected route on the server, authentication is required
-    //   const encodedCredentials = btoa(`${credentials.username}:${credentials.password}`); //btoa() method encodes a string in base-64
-    //
-    //   //set an Authorization header on each request that requires authentication
-    //   options.headers['Authorization'] = `Basic ${encodedCredentials}`; //set Authorization type ot Basic, followed by encoded credentials
-    //   // Example authorization header: Authorization: Basic am9lQHNtaXRoLmNvbTpqb2U=
-    // }
-
     return fetch(url, options); //pass url and 2nd param (options) to fetch() method
   }
 
-  //Use api() method to get courses data
+  // GET Course
   async getCourses() {
-    //make GET request to /courses endpoint
-    const response = await this.api(`/courses`, 'GET', null);
-    if (response.status === 200) {
-      return response.json().then(data => data); //return json object containing courses
-    }
-    else if (response.status === 401) {
-      return null;
-    }
-    else {
+    const response = await this.api('/courses', 'GET', null);
+    if(response.status === 200) {
+      return response.json().then(data => data); //return json object containing course data
+    } else if (response.status === 404 || response.status === 500) {
       throw new Error();
     }
   }
+
+  // GET Course
+  async getCourse(id) {
+    const response = await this.api('/courses' + id, 'GET', null);
+    if(response.status === 200) {
+      return response.json().then(data => data); //return json object containing course data
+    } else if (response.status === 404 || response.status === 500) {
+      throw new Error();
+    }
+  }
+
+  // //check if authentication is required
+  // if (requiresAuth) { //if making a request to a protected route on the server, authentication is required
+  //   const encodedCredentials = btoa(`${credentials.username}:${credentials.password}`); //btoa() method encodes a string in base-64
+  //
+  //   //set an Authorization header on each request that requires authentication
+  //   options.headers['Authorization'] = `Basic ${encodedCredentials}`; //set Authorization type ot Basic, followed by encoded credentials
+  //   // Example authorization header: Authorization: Basic am9lQHNtaXRoLmNvbTpqb2U=
+  // }
+
 
   // //Use api() method to get authenticated user
   // //accepts two arguments: username, password, for passing data to the API

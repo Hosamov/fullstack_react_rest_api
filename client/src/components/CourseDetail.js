@@ -7,25 +7,31 @@ import axios from 'axios';
 const url = `http://localhost:5000/api`;
 
 function Courses() {
-  const [courses, setCourses] = useState([]);
+  const [course, setCourse] = useState({});
+  const [canLoad, setCanLoad] = useState(true);
 
 //Get courses using axios
   useEffect(() => {
-    const getCourses = async () => {
-      await axios.get(`${url}/courses`)
+    const getCourse = async () => {
+      await axios.get(`${url}/courses/${course.id}`)
         .then(response => { //check for response
-          if(response.status === 200) setCourses(response.data.courses) //add response data to courses state
+          if(response.status === 200) setCourse(response.data.courses) //add response data to courses state
         })
         .catch(error => {
           console.log('Error fetching and parsing data from database ', error);
         });
     }
-    getCourses(); //call variable so data may be retrieved
+      //if(courses.length === 0) getCourses(); //call variable so data may be retrieved
+      //check if getCourses can load
+      if(canLoad){
+        getCourse(); // call function
+        setCanLoad(false); // reset canLoad
+      }
   });
 
   return (
     <div class="wrap main--grid">
-      { courses.map(course =>
+      {(course =>
           <a class="course--module course--link" href={`/courses/${course.id}`} key={course.id}>
               <h2 class="course--label">Course</h2>
               <h3 class="course--title">{course.title}</h3>

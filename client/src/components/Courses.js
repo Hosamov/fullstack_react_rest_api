@@ -1,26 +1,33 @@
 //Stateful Component
-import React, {useState, useEffect, useContext} from 'react';
-//import {Context} from '../Context';
+import React, { useState, useEffect, useContext } from 'react';
+import { Context } from '../Context';
 import axios from 'axios';
 
 //URL
 const url = `http://localhost:5000/api`;
 
-function Courses() {
+function Courses(props) {
+  const context = useContext(Context);
   const [courses, setCourses] = useState([]);
+  const [canLoad, setCanLoad] = useState(true);
 
 //Get courses using axios
   useEffect(() => {
     const getCourses = async () => {
-      await axios.get(`${url}/courses`)
-        .then(response => { //check for response
-          if(response.status === 200) setCourses(response.data.courses) //add response data to courses state
+      await context.data.getCourses()
+        .then( response => { //check for response
+          if(response.status !== 400 && response.status !== 500) setCourses(response.courses) //add response data to courses state
         })
         .catch(error => {
           console.log('Error fetching and parsing data from database ', error);
         });
     }
-    getCourses(); //call variable so data may be retrieved
+      //if(courses.length === 0) getCourses(); //call variable so data may be retrieved
+      //check if getCourses can load
+      if(canLoad){
+        getCourses(); // call function
+        setCanLoad(false); // reset canLoad
+      }
   });
 
   return (
@@ -110,3 +117,22 @@ export default Courses;
 //   }
 // }
 // export default Courses;
+
+
+// useEffect(() => {
+//   const getCourses = async () => {
+//     await axios.get(`${url}/courses`)
+//       .then(response => { //check for response
+//         if(response.status === 200) setCourses(response.data.courses) //add response data to courses state
+//       })
+//       .catch(error => {
+//         console.log('Error fetching and parsing data from database ', error);
+//       });
+//   }
+//     //if(courses.length === 0) getCourses(); //call variable so data may be retrieved
+//     //check if getCourses can load
+//     if(canLoad){
+//       getCourses(); // call function
+//       setCanLoad(false); // reset canLoad
+//     }
+// });
