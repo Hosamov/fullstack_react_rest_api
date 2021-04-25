@@ -25,18 +25,28 @@ export default class Data {
   async getCourses() {
     const response = await this.api('/courses', 'GET', null);
     if(response.status === 200) {
-      return response.json().then(data => data); //return json object containing course data
+      return response.json().then(data => data); //return json object containing courses data
     } else if (response.status === 404 || response.status === 500) {
       throw new Error();
     }
   }
 
-  // GET Course
-  async getCourse(id) {
-    const response = await this.api('/courses' + id, 'GET', null);
-    if(response.status === 200) {
-      return response.json().then(data => data); //return json object containing course data
-    } else if (response.status === 404 || response.status === 500) {
+  //// GET Course *Unused/Backup* (route is using axios to fetch data)
+  // async getCourse(id) {
+  //   const response = await this.api(`/courses/${id}`, 'GET', null);
+  //   if(response.status === 200) {
+  //     return response.json().then(data => data);
+  //   } else if (response.status === 404 || response.status === 500) {
+  //     throw new Error();
+  //   }
+  // }
+
+  // DELETE Course
+  async deleteCourse(id) {
+    const response = await this.api(`/courses/${id}`, 'DELETE', null);
+    if(response.status === 204) {
+      return response.json().then(data => data);
+    } else if (response.status === 401 || response.status === 500) {
       throw new Error();
     }
   }

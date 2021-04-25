@@ -1,51 +1,82 @@
 //Stateful Component
 import React, {useState, useEffect, useContext} from 'react';
-//import {Context} from '../Context';
+import {Context} from '../Context';
+import { useParams } from 'react-router-dom'; //https://reactrouter.com/web/api/Hooks/useparams
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown'; //used for basic markdown while rendering the data
 
-//URL
-const url = `http://localhost:5000/api`;
+const url = "http://localhost:5000/api";
 
-function Courses() {
-  const [course, setCourse] = useState({});
+function CourseDetail(props) {
+  const context = useContext(Context);
+
+  const [course, setCourse] = useState([]);
   const [canLoad, setCanLoad] = useState(true);
+  const { id } = useParams();
 
-//Get courses using axios
-  useEffect(() => {
-    const getCourse = async () => {
-      await axios.get(`${url}/courses/${course.id}`)
-        .then(response => { //check for response
-          if(response.status === 200) setCourse(response.data.courses) //add response data to courses state
-        })
-        .catch(error => {
-          console.log('Error fetching and parsing data from database ', error);
-        });
-    }
-      //if(courses.length === 0) getCourses(); //call variable so data may be retrieved
-      //check if getCourses can load
-      if(canLoad){
-        getCourse(); // call function
-        setCanLoad(false); // reset canLoad
-      }
-  });
+//retrieve course components when components are mounted
+useEffect(() => {
+    //use axios to fetch course data
+    axios.get(`${url}/courses/${id}`)
+      .then(response => setCourse(response.data.course[0]))
+      .catch(error => {
+        console.log('Error fetching and parsing data from database ', error);
+      })
+  }, [id]);
+
+  //declare empty variables in course state for the fetched data
+  const {
+    User: { emailAddress, firstName, lastName} = {},
+    description,
+    estimatedTime,
+    materialsNeeded,
+    title
+  } = course;
+
+  const deleteCourse = async () => {
+    await context.data.deleteCourse(id)
+      .then(response => response)
+      .catch(error => {
+        console.log('Error fetching and parsing data from database ', error);
+      })
+  }
 
   return (
-    <div class="wrap main--grid">
-      {(course =>
-          <a class="course--module course--link" href={`/courses/${course.id}`} key={course.id}>
-              <h2 class="course--label">Course</h2>
-              <h3 class="course--title">{course.title}</h3>
-          </a>
-        )}
-        <a class="course--module course--add--module" href="/courses/create">
-            <span class="course--add--title">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                viewBox="0 0 13 13" class="add"><polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 "></polygon></svg>
-                New Course
-            </span>
-        </a>
+    <main>
+      <div class="actions--bar">
+          <div class="wrap">
+              <a class="button" href={`/courses/${id}/update`}>Update Course</a> {/*Update Course*/}
+              <a class="button" onClick={deleteCourse}>Delete Course</a> {/*Delete Course, if authorized*/}
+              <a class="button button-secondary" href={`../courses`}>Return to List</a> {/*Return to List Button*/}
+          </div>
       </div>
+
+      <div class="wrap">
+          <h2>Course Detail</h2>
+          <form>
+              <div class="main--flex">
+                  <div>
+                      <h3 class="course--detail--title">Course</h3>
+                      <h4 class="course--name">{title}</h4>
+                      <p>By {`${firstName} ${lastName}`}</p>
+                      <ReactMarkdown>
+                        {description}
+                      </ReactMarkdown>
+                  </div>
+                  <div>
+                      <h3 class="course--detail--title">Estimated Time</h3>
+                      <p>{estimatedTime}</p>
+
+                      <h3 class="course--detail--title">Materials Needed</h3>
+                      <ReactMarkdown className="course--detail--list">
+                        {materialsNeeded}
+                      </ReactMarkdown>
+                  </div>
+              </div>
+          </form>
+      </div>
+    </main>
   );
 }
 
-export default Courses;
+export default CourseDetail;
