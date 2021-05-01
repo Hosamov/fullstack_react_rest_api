@@ -95,7 +95,6 @@ export default class UserSignUp extends Component {
     return (
       <div className="bounds">
         <div class="form--centered">
-
           <Form
             cancel={this.cancel}
             errors={errors}

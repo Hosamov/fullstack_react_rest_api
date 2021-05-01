@@ -44,28 +44,17 @@ export class Provider extends Component {
     if(user !== null) {
       this.setState(() => {
         return {
+           //set authenticatedUser = user
            authenticatedUser: user,
+           //password: password
          };
        });
-       Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
+       //set Cookie
+       //pass 'authenticatedUser' to cookie name, store the stringified user object,
+       Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 }); // expires after 1 day
      }
      return user;
    }
-
-    // if(user !== null) {
-    //   this.setState(() => {
-    //     return {
-    //       authenticatedUser: user,
-    //       password: password
-    //     }
-    //   });
-
-      //set cookie
-      //pass 'authenticatedUser' to cookie name, store the stringified user object,
-      //expires key to define when cookie will be removed (in this case, 1 day)
-
-    //}
-
 
   signOut = () => {
     this.setState(() => {

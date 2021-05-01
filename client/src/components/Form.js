@@ -22,6 +22,7 @@ export default (props) => {
   return (
     <div>
       <ErrorsDisplay errors={errors} /> {/*exports a function that renders any validation errors sent from the API*/}
+      <br/>
       <form onSubmit={handleSubmit}>
         {elements()}
         <div className="pad-bottom">
