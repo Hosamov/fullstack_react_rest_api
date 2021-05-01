@@ -1,17 +1,20 @@
 //Stateful Component
 import React, {useState, useEffect, useContext} from 'react';
-import {Context} from '../Context';
+import { Context } from '../Context';
 import { useParams } from 'react-router-dom'; //https://reactrouter.com/web/api/Hooks/useparams
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown'; //used for basic markdown while rendering the data
 
 const url = "http://localhost:5000/api";
 
+
+//TODO: add user authorization
+
 function CourseDetail(props) {
   const context = useContext(Context);
 
   const [course, setCourse] = useState([]);
-  const [canLoad, setCanLoad] = useState(true);
+  //const [canLoad, setCanLoad] = useState(true);
   const { id } = useParams();
 
 //retrieve course components when components are mounted
