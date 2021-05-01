@@ -1,5 +1,6 @@
 //Stateful Component
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'; // used for linking to /signup route
 import Form from './Form';
 
 export default class UserSignIn extends Component {
@@ -9,6 +10,51 @@ export default class UserSignIn extends Component {
     emailAddress: '', //emailAddress = 'username'
     password: '',
     errors: [],
+  }
+
+  change = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState(() => {
+      return {
+        [name]: value
+      };
+    });
+  }
+
+  submit = () => {
+    const { context } = this.props; //destructuring to extract context from props
+    const { emailAddress, password } = this.state; //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
+    const { from } = this.props.location.state || { from: { pathname: '/courses' } };
+
+    context.actions.signIn(emailAddress, password)
+      // .then( errors => {
+      //   if (errors.length) {
+      //     this.setState({ errors });
+      //   } else {
+      //     this.props.history.push(from);
+      //       console.log(`SUCCESS! ${emailAddress} is now signed in!`); //log out that user has successfully been authenticated
+      //   }
+      // })
+      context.actions.signIn(emailAddress, password)
+        .then((user) => {
+          if(user === null) {
+            this.setState(() => {
+              return { errors: ['Login unsuccessful']};
+            })
+          } else {
+            this.props.history.push('/') //navigate user to home/courses route
+          }
+        })
+      .catch(err => {
+        console.log(err);
+        this.props.history.push('/error');
+      })
+  }
+
+  cancel = () => {
+    this.props.history.push('/'); //redirect to home route
   }
 
   render() {
@@ -45,45 +91,8 @@ export default class UserSignIn extends Component {
                  label="Password" />
              </React.Fragment>
            )} />
-         <p>Don't have a user account? Click here to <a href="/signup">sign up</a>!</p>
+         <p>Don't have a user account? <Link to="/signup">Click here</Link> to sign up!</p>
       </div>
     );
-  }
-
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
-  }
-
-  submit = () => {
-    const { context } = this.props;
-    const { emailAddress, password } = this.state;
-    const { from } = this.props.location.state || { from: { pathname: '/courses' } };
-
-    context.actions.signIn(emailAddress, password)
-      .then(user => {
-        if (user === null) {
-          this.setState(() => {
-            return {errors: ['Sign-in was unsuccessful'] };
-          });
-        } else {
-          this.props.history.push(from); //if authenticated, route to 'from'
-          console.log(`SUCCESS! ${emailAddress} is now signed in!`);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        this.props.history.push('/error');
-      })
-  }
-
-  cancel = () => {
-    this.props.history.push('/'); //redirect to home route
   }
 }

@@ -41,13 +41,10 @@ export class Provider extends Component {
   //Uses these credentials to call getUser() method in Data.js.
   signIn = async (emailAddress, password) => {
     const user = await this.data.getUser(emailAddress, password); //set value to await a promise returned by this.data.getUser()
-    user.password = password;
     if(user !== null) {
-      user.password = password;
       this.setState(() => {
         return {
            authenticatedUser: user,
-           password: password
          };
        });
        Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
