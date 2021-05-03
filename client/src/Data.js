@@ -79,11 +79,14 @@ export default class Data {
 
 
   // DELETE Course
-  async deleteCourse(id) {
-    const response = await this.api(`/courses/${id}`, 'DELETE', null);
+  async deleteCourse(id, emailAddress, password) {
+    const response = await this.api(`/courses/${id}`, 'DELETE', null, true, {emailAddress, password});
     if(response.status === 204) {
-      return response.json().then(data => data);
-    } else if (response.status === 401 || response.status === 500) {
+      return response.status;
+    } else if (response.status === 403) {
+      console.log('unauthorized');
+    } else {
+      console.log(response);
       throw new Error();
     }
   }

@@ -1,18 +1,15 @@
 //Stateful Component
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from '../Context';
-import { useParams } from 'react-router-dom'; //https://reactrouter.com/web/api/Hooks/useparams
+import { useHistory, useParams, Link } from 'react-router-dom'; //https://reactrouter.com/web/api/Hooks/useparams
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown'; //used for basic markdown while rendering the data
 
 const url = "http://localhost:5000/api";
 
-
-//TODO: add user authorization
-
 function CourseDetail(props) {
   const context = useContext(Context);
-
+  const history = useHistory();
   const [course, setCourse] = useState([]);
   const [user, setUser] = useState([]);
   const { id } = useParams();
@@ -32,20 +29,32 @@ useEffect(() => {
   }, [id]);
 
   //declare empty variables in course state for the fetched data
+  const {emailAddress, password} = context.authenticatedUser;
+
   const {
-    User: { firstName, lastName } = {},
+    User: { firstName, lastName} = {},
     description,
     estimatedTime,
     materialsNeeded,
     title
   } = course;
 
+
   const deleteCourse = async () => {
-    await context.data.deleteCourse(id)
-      .then(response => response)
-      .catch(error => {
-        console.log('Error fetching and parsing data from database ', error);
-      })
+    await context.data.deleteCourse(id, emailAddress, password)
+    .then(errors => {
+      if(errors.length) {
+        console.log(errors);
+        this.setState({ errors });
+      } else {
+        console.log('Course deleted');
+        history.push('/courses');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      history.push('error');
+    })
   }
 
   return (
@@ -53,7 +62,7 @@ useEffect(() => {
       <div className="actions--bar">
           <div className="wrap">
               <a className="button" href={`/courses/${id}/update`}>Update Course</a> {/*Update Course*/}
-              <a className="button" href={`/courses`} onClick={deleteCourse}>Delete Course</a> {/*Delete Course, if authorized*/}
+              <button className="button" onClick={deleteCourse}>Delete Course</button> {/*Delete Course, if authorized*/}
               <a className="button button-secondary" href={`../courses`}>Return to List</a> {/*Return to List Button*/}
           </div>
       </div>
