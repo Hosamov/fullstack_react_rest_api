@@ -9,7 +9,6 @@ import Form from './Form';
 export default class CreateCourse extends Component {
   state = {
     title: '',
-    author: '',
     description: '',
     estimatedTime: '',
     materialsNeeded: '',
@@ -104,8 +103,9 @@ export default class CreateCourse extends Component {
 
     //TODO: Sort out why password is registering as undefined, therefore resulting in a 401 Unauthorized error
     const {emailAddress, password, id} = context.authenticatedUser;
-    console.log(password);
     const userId = id;
+    //console.log(userId);
+    //console.log({password});
 
     //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
     const {
@@ -129,11 +129,12 @@ export default class CreateCourse extends Component {
           if(errors.length) {
             this.setState({ errors });
           } else {
+            console.log(`New course: ${course.title} was created.`);
             this.props.history.push('/') //navigate user to home/courses route
           }
         })
       .catch(err => {
-        //TODO: add /forbidden & /NotFound error routes
+        //TODO: add /Forbidden & /NotFound error routes
         console.log(err);
         this.props.history.push('/error');
       })

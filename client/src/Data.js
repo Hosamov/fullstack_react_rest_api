@@ -20,6 +20,7 @@ export default class Data {
 
     //check if authentication is required
     if (requiresAuth) { //if making a request to a protected route on the server, authentication is required
+      //credentials: emailAddress, password (must match data passed to it (from post routes))
       const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`); //btoa() method encodes a string in base-64; find by emailAddress
 
       //set an Authorization header on each request that requires authentication
@@ -41,8 +42,9 @@ export default class Data {
   }
 
   // POST/create Course
-  async createCourse(course, username, password) {
-    const response = await this.api('/courses', 'POST', course, true, {username, password}); //make POST request, send new course data to /courses endpoint
+  async createCourse(course, emailAddress, password) {
+    console.log(password);
+    const response = await this.api('/courses', 'POST', course, true, {emailAddress, password}); //make POST request, send new course data to /courses endpoint
     if (response.status === 201) {
       return [];
     }
