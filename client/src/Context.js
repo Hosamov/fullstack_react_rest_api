@@ -43,10 +43,9 @@ export class Provider extends Component {
     const user = await this.data.getUser(emailAddress, password); //set value to await a promise returned by this.data.getUser()
     if(user !== null) {
       this.setState(() => {
-        return {
-           //set authenticatedUser = user
-           authenticatedUser: user,
-         };
+        user.password = password;
+        user.emailAddress = emailAddress;
+        return { authenticatedUser: user };
        });
        //set Cookie
        //pass 'authenticatedUser' to cookie name, store the stringified user object,

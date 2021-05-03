@@ -41,8 +41,8 @@ export default class Data {
   }
 
   // POST/create Course
-  async createCourse(course, emailAddress, password) {
-    const response = await this.api('/courses', 'POST', course, true, {emailAddress, password}); //make POST request, send new user data to /users endpoint
+  async createCourse(course, username, password) {
+    const response = await this.api('/courses', 'POST', course, true, {username, password}); //make POST request, send new course data to /courses endpoint
     if (response.status === 201) {
       return [];
     }
@@ -52,7 +52,11 @@ export default class Data {
       });
     }
     else {
-      throw new Error();
+      //log error to the console
+      return response.json()
+        .then((error) => {
+          console.log(error);
+        });
     }
   }
 
