@@ -23,7 +23,7 @@ export default class UserSignIn extends Component {
     });
   }
 
-  
+
   submit = () => {
     const { context } = this.props; //destructuring to extract context from props
     const { emailAddress, password } = this.state; //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
@@ -59,7 +59,7 @@ export default class UserSignIn extends Component {
 
     return (
       <div className="bounds">
-        <div class="form--centered">
+        <div className="form--centered">
            <Form
              cancel={this.cancel}
              errors={errors}
@@ -67,7 +67,7 @@ export default class UserSignIn extends Component {
              submitButtonText="Sign In"
              elements={() => (
                <React.Fragment>
-                 <div class="form--centered">
+                 <div className="form--centered">
                    <h2>Sign In</h2>
                    <label for="emailAddress">Email Address</label>
                    <input

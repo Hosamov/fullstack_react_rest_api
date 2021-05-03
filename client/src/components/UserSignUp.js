@@ -96,7 +96,7 @@ export default class UserSignUp extends Component {
 
     return (
       <div className="bounds">
-        <div class="form--centered">
+        <div className="form--centered">
           <Form
             cancel={this.cancel}
             errors={errors}
@@ -104,7 +104,7 @@ export default class UserSignUp extends Component {
             submitButtonText="Sign Up"
             elements={() => (
               <React.Fragment>
-                <div class="form--centered">
+                <div className="form--centered">
                   <h2>Sign Up</h2>
                   <label for="firstName">First Name</label>
                   <input

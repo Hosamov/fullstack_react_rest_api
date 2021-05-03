@@ -50,31 +50,31 @@ useEffect(() => {
 
   return (
     <main>
-      <div class="actions--bar">
-          <div class="wrap">
-              <a class="button" href={`/courses/${id}/update`}>Update Course</a> {/*Update Course*/}
-              <a class="button" onClick={deleteCourse}>Delete Course</a> {/*Delete Course, if authorized*/}
-              <a class="button button-secondary" href={`../courses`}>Return to List</a> {/*Return to List Button*/}
+      <div className="actions--bar">
+          <div className="wrap">
+              <a className="button" href={`/courses/${id}/update`}>Update Course</a> {/*Update Course*/}
+              <a className="button" href={`/courses`} onClick={deleteCourse}>Delete Course</a> {/*Delete Course, if authorized*/}
+              <a className="button button-secondary" href={`../courses`}>Return to List</a> {/*Return to List Button*/}
           </div>
       </div>
 
-      <div class="wrap">
+      <div className="wrap">
           <h2>Course Detail</h2>
           <form>
-              <div class="main--flex">
+              <div className="main--flex">
                   <div>
-                      <h3 class="course--detail--title">Course</h3>
-                      <h4 class="course--name">{title}</h4>
+                      <h3 className="course--detail--title">Course</h3>
+                      <h4 className="course--name">{title}</h4>
                       <p>By {`${firstName} ${lastName}`}</p>
                       <ReactMarkdown>
                         {description}
                       </ReactMarkdown>
                   </div>
                   <div>
-                      <h3 class="course--detail--title">Estimated Time</h3>
+                      <h3 className="course--detail--title">Estimated Time</h3>
                       <p>{estimatedTime}</p>
 
-                      <h3 class="course--detail--title">Materials Needed</h3>
+                      <h3 className="course--detail--title">Materials Needed</h3>
                       <ReactMarkdown className="course--detail--list">
                         {materialsNeeded}
                       </ReactMarkdown>

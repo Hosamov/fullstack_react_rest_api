@@ -13,7 +13,6 @@ import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import CreateCourse from './components/CreateCourse';
-import Authenticated from './components/Authenticated';
 
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute'; //for authenticated users only
@@ -26,22 +25,23 @@ const CreateCourseWithContext = withContext(CreateCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse);
 const UserSignInWithContext = withContext(UserSignIn);
 const UserSignUpWithContext = withContext(UserSignUp);
-const AuthWithContext = withContext (Authenticated); //Connect Authenticated component to context
 
-  export default () => (
-      <Router>
-        <div>
-          <HeaderWithContext />
+const App = () => (
+    <Router>
+      <div>
+        <HeaderWithContext />
 
-            <Switch>
-              <Route exact path="/"> <Redirect to="/courses"/> </Route>
-              <PrivateRoute exact path='/courses/create' component={CreateCourseWithContext} />
-              <PrivateRoute exact path='/courses/":id/update"' component={UpdateCourseWithContext} />
-              <Route exact path='/courses' component={CoursesWithContext} />
-              <Route exact path='/courses/:id' component={CourseDetailWithContext} />
-              <Route exact path='/signin' component={UserSignInWithContext} />
-              <Route exact path='/signup' component={UserSignUpWithContext} />
-            </Switch>
-        </div>
-      </Router>
-  );
+          <Switch>
+            <Route exact path="/"> <Redirect to="/courses"/> </Route>
+            <PrivateRoute exact path='/courses/create' component={CreateCourseWithContext} />
+            <PrivateRoute exact path='/courses/":id/update"' component={UpdateCourseWithContext} />
+            <Route exact path='/courses' component={CoursesWithContext} />
+            <Route exact path='/courses/:id' component={CourseDetailWithContext} />
+            <Route exact path='/signin' component={UserSignInWithContext} />
+            <Route exact path='/signup' component={UserSignUpWithContext} />
+          </Switch>
+      </div>
+    </Router>
+);
+
+export default App;

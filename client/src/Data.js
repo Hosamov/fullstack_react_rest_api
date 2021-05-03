@@ -43,7 +43,6 @@ export default class Data {
 
   // POST/create Course
   async createCourse(course, emailAddress, password) {
-    console.log(password);
     const response = await this.api('/courses', 'POST', course, true, {emailAddress, password}); //make POST request, send new course data to /courses endpoint
     if (response.status === 201) {
       return [];

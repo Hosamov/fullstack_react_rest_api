@@ -27,7 +27,7 @@ export default class CreateCourse extends Component {
     } = this.state;
 
     return(
-      <div class="wrap">
+      <div className="wrap">
         <Form
           cancel={this.cancel}
           errors={errors}
@@ -35,7 +35,7 @@ export default class CreateCourse extends Component {
           submitButtonText="Create Course"
           elements={() => (
             <React.Fragment>
-              <div class="main--flex">
+              <div className="main--flex">
                 <div>
                   <label htmlFor="courseTitle">Course Title</label>
                   <input
@@ -100,12 +100,8 @@ export default class CreateCourse extends Component {
 
   submit = () => {
     const { context } = this.props; //extract context from props
-
-    //TODO: Sort out why password is registering as undefined, therefore resulting in a 401 Unauthorized error
     const {emailAddress, password, id} = context.authenticatedUser;
     const userId = id;
-    //console.log(userId);
-    //console.log({password});
 
     //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
     const {
@@ -134,9 +130,15 @@ export default class CreateCourse extends Component {
           }
         })
       .catch(err => {
-        //TODO: add /Forbidden & /NotFound error routes
-        console.log(err);
-        this.props.history.push('/error');
+        //TODO: add /Forbidden (401) & /NotFound(404) error routes
+        if(err === 401) {
+          this.props.history.push('/forbidden');
+        } else if (err === 404) {
+          this.props.history.push('/notfound');
+        } else {
+          console.log(err);
+          this.props.history.push('/error');
+        }
       })
   }
 }
