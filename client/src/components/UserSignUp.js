@@ -27,13 +27,14 @@ export default class UserSignUp extends Component {
   submit = () => {
     const { context } = this.props; //destructuring to extract context from props
 
+    //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
     const {
       firstName,
       lastName,
       emailAddress,
       password,
       confirmPassword
-    } = this.state; //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
+    } = this.state;
 
     //new user payload
     const user = { //new user payload to be passed to the createUser() method
@@ -82,6 +83,7 @@ export default class UserSignUp extends Component {
   cancel = () => {
     this.props.history.push('/'); //redirect user back to home route
   }
+
   render() {
       const {
         firstName,

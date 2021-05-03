@@ -14,14 +14,18 @@ function CourseDetail(props) {
   const context = useContext(Context);
 
   const [course, setCourse] = useState([]);
-  //const [canLoad, setCanLoad] = useState(true);
+  const [user, setUser] = useState([]);
   const { id } = useParams();
 
 //retrieve course components when components are mounted
 useEffect(() => {
     //use axios to fetch course data
     axios.get(`${url}/courses/${id}`)
-      .then(response => setCourse(response.data.course[0]))
+      .then(response => {
+        setCourse(response.data.course[0])
+        setUser(response.data.course[0].User)
+        //console.log(response.data.course[0].User)
+      })
       .catch(error => {
         console.log('Error fetching and parsing data from database ', error);
       })
@@ -29,7 +33,7 @@ useEffect(() => {
 
   //declare empty variables in course state for the fetched data
   const {
-    User: { emailAddress, firstName, lastName} = {},
+    User: { firstName, lastName } = {},
     description,
     estimatedTime,
     materialsNeeded,

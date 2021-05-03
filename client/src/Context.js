@@ -46,15 +46,14 @@ export class Provider extends Component {
         return {
            //set authenticatedUser = user
            authenticatedUser: user,
-           //password: password
          };
        });
        //set Cookie
        //pass 'authenticatedUser' to cookie name, store the stringified user object,
        Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 }); // expires after 1 day
      }
-     return user;
-   }
+    return user;
+  }
 
   signOut = () => {
     this.setState(() => {
@@ -65,8 +64,7 @@ export class Provider extends Component {
     //remove the cookies when the user signs out
     Cookies.remove('authenticatedUser');
   }
-
- }
+}
 
 export const Consumer = Context.Consumer;
 

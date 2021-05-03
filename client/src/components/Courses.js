@@ -22,10 +22,9 @@ function Courses(props) {
       if(canLoad){
         getCourses();
         setCanLoad(false);
-
       }
       console.log(courses);
-  });
+  }, [canLoad, courses, context.data]);
 
   return (
     <div class="wrap main--grid">

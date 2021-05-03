@@ -27,7 +27,6 @@ export default class Data {
       // Example authorization header: Authorization: Basic am9lQHNtaXRoLmNvbTpqb2U=
     }
 
-
     return fetch(url, options); //pass url and 2nd param (options) to fetch() method
   }
 
@@ -40,6 +39,39 @@ export default class Data {
       throw new Error();
     }
   }
+
+  // POST/create Course
+  async createCourse(course, emailAddress, password) {
+    const response = await this.api('/courses', 'POST', course, true, {emailAddress, password}); //make POST request, send new user data to /users endpoint
+    if (response.status === 201) {
+      return [];
+    }
+    else if (response.status === 400) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    }
+    else {
+      throw new Error();
+    }
+  }
+
+  // // PUT/Update Course
+  // async updateCourse(id, course, user, password) {
+  //   const response = await this.api('/courses', 'PUT', course, true, {user, password}); //make POST request, send new user data to /users endpoint
+  //   if (response.status === 204) {
+  //     return [];
+  //   }
+  //   else if (response.status === 401) {
+  //     return response.json().then(data => {
+  //       return data.errors;
+  //     });
+  //   }
+  //   else {
+  //     throw new Error();
+  //   }
+  // }
+
 
   // DELETE Course
   async deleteCourse(id) {
