@@ -36,7 +36,7 @@ export default class UpdateCourse extends Component {
       .catch(error => {
         console.log('Error fetching and parsing data from database ', error);
       })
-}
+  }
 
   render() {
     const authUser = this.props.context.authenticatedUser;
