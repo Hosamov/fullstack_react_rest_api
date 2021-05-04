@@ -35,6 +35,7 @@ export default class CreateCourse extends Component {
           submitButtonText="Create Course"
           elements={() => (
             <React.Fragment>
+              <h2>Create Course</h2>
               <div className="main--flex">
                 <div>
                   <label htmlFor="courseTitle">Course Title</label>
@@ -130,7 +131,6 @@ export default class CreateCourse extends Component {
           }
         })
       .catch(err => {
-        //TODO: add /Forbidden (401) & /NotFound(404) error routes
         if(err === 401) {
           this.props.history.push('/forbidden');
         } else if (err === 404) {

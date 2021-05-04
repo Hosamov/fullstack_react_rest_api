@@ -61,22 +61,21 @@ export default class Data {
     }
   }
 
-  // // PUT/Update Course
-  // async updateCourse(id, course, user, password) {
-  //   const response = await this.api('/courses', 'PUT', course, true, {user, password}); //make POST request, send new user data to /users endpoint
-  //   if (response.status === 204) {
-  //     return [];
-  //   }
-  //   else if (response.status === 401) {
-  //     return response.json().then(data => {
-  //       return data.errors;
-  //     });
-  //   }
-  //   else {
-  //     throw new Error();
-  //   }
-  // }
-
+  // PUT/Update Course
+  async updateCourse(id, course, emailAddress, password) {
+    const response = await this.api(`/courses/${id}`, 'PUT', course, true, {emailAddress, password}); //make PUT request, update courses/:id route
+    if (response.status === 204) {
+      return [];
+    }
+    else if (response.status === 400) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    }
+    else {
+      throw new Error();
+    }
+  }
 
   // DELETE Course
   async deleteCourse(id, emailAddress, password) {

@@ -1,7 +1,7 @@
 //Stateful Component
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from '../Context';
-import { useHistory, useParams, Link } from 'react-router-dom'; //https://reactrouter.com/web/api/Hooks/useparams
+import { useHistory, useParams} from 'react-router-dom'; //https://reactrouter.com/web/api/Hooks/useparams
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown'; //used for basic markdown while rendering the data
 
@@ -47,7 +47,7 @@ useEffect(() => {
         console.log(errors);
         this.setState({ errors });
       } else {
-        console.log('Course deleted');
+        console.log('Course deleted successfully.');
         history.push('/courses');
       }
     })
