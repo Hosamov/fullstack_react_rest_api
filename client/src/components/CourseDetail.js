@@ -1,8 +1,10 @@
-//Stateful Component
+/*
+// Statefull Component
+// Get and render details of each course from the REST API DB
+*/
 import React, {Component} from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
-import ReactMarkdown from 'react-markdown'; //used for basic markdown while rendering the data
+import { Redirect, Link } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown'; //import ReactMarkdown for adding markdown to description & materialsNeeded properties
 
 const url = "http://localhost:5000/api"; //url for REST API
 
@@ -10,15 +12,9 @@ export default class CourseDetail extends Component {
   state = {
     course: '',
     author: '',
-    // firstName: '',
-    // lastName: '',
-    // emailAddress: '',
-    // estimatedTime: '',
-    // materialsNeeded: '',
     errors: [],
   }
 
-  //retrieve course components when components are mounted
   componentDidMount() {
     const id = this.props.match.params.id; //target the id param
     console.log(id);
@@ -29,18 +25,12 @@ export default class CourseDetail extends Component {
       .then((data) => {
         const courseData = data.course[0];
         const userData = data.course[0].User;
-        //console.log(data.course[0])
-        //console.log(data.course[0].User.firstName)
+
+        //set state of course and author to be used during render()
         this.setState({
           course: courseData,
           author: userData,
-          // firstName: courseData.Users.firstName,
-          // lastName: courseData.Users.lastName,
-          // estimatedTime: courseData.estimatedTime,
-          // materialsNeeded: courseData.materialsNeeded
         })
-        //console.log(this.state.course.id)
-        //console.log(this.state.course.User.firstName)
       })
       .catch(error => {
         <Redirect to="/error" />
@@ -49,7 +39,7 @@ export default class CourseDetail extends Component {
 
   deleteCourse = async () => {
     const {context, history} = this.props;
-    const {emailAddress, password} = context.authenticatedUser;
+    const {emailAddress, password} = context.authenticatedUser; //use valid credentials to delete a course
     const id = this.props.match.params.id; //target the id param
 
     await context.data.deleteCourse(id, emailAddress, password)
@@ -71,22 +61,23 @@ export default class CourseDetail extends Component {
   render() {
     const {context} = this.props;
     const {course, author} = this.state;
-    const authUser = context.authenticatedUser;
-    const id = this.props.match.params.id; //target the id param
+    const authUser = context.authenticatedUser; //used to verify is author has authorization to update or delete the course
+    const id = this.props.match.params.id;
+
+    //TODO: Add ReactMarkdown to description & materialsNeeded properties
 
     return (
-      //TODO: Check if course is true...
       <>
         <div className="actions--bar">
             <div className="wrap">
                 {authUser && authUser.id === author.id ? (
                   <>
-                  <a className="button" href={`/courses/${id}/update`}>Update Course</a>
-                  <button className="button" onClick={this.deleteCourse}>Delete Course</button>
-                  <a className="button button-secondary" href={`../courses`}>Return to List</a>
+                  <Link to={`/courses/${id}/update`} className="button">Update Course</Link>
+                  <Link to='/' className="button" onClick={this.deleteCourse}>Delete Course</Link>
+                  <Link to='/' className="button button-secondary">Return to List</Link>
                   </>
                 ) : (
-                  <a className="button button-secondary" href={`../courses`}>Return to List</a>
+                  <Link to='/' className="button button-secondary">Return to List</Link>
                 )}
               </div>
           </div>
@@ -117,7 +108,5 @@ export default class CourseDetail extends Component {
           </div>
         </>
         );
-
       }
-
 }

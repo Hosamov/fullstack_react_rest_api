@@ -1,7 +1,11 @@
+/*
+//Stateless component
+//Higher-Order Component (HOC) for configuring protected routes
+*/
+
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Consumer } from './Context';
-
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (

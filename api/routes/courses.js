@@ -69,7 +69,7 @@ router.get('/courses/:id',  asyncHandler(async (req, res, next) => {
   });
 
   if(course) {
-    res.status(200).json( { course } ); //return 200 status & course data
+    res.status(200).json( { course } ).end; //return 200 status & course data
   } else {
     res.status(400).json( { message: "Course not found" } );
   }

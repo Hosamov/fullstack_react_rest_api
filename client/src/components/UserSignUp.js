@@ -13,16 +13,7 @@ export default class UserSignUp extends Component {
     errors: []
   }
 
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
 
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
-  }
 
   submit = () => {
     const { context } = this.props; //destructuring to extract context from props
@@ -33,7 +24,7 @@ export default class UserSignUp extends Component {
       lastName,
       emailAddress,
       password,
-      confirmPassword
+      confirmedPassword
     } = this.state;
 
     //new user payload
@@ -42,11 +33,11 @@ export default class UserSignUp extends Component {
       lastName,
       emailAddress,
       password,
-      confirmPassword
+      confirmedPassword
     };
 
     //Ensure password and confirmPassword are the same before creating the user
-    if(password === confirmPassword) {
+    if(password === confirmedPassword) {
       //create new user
       context.data.createUser(user) //return a promise
         .then( errors => {
@@ -80,6 +71,17 @@ export default class UserSignUp extends Component {
 
   }
 
+  change = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState(() => {
+      return {
+        [name]: value
+      };
+    });
+  }
+
   cancel = () => {
     this.props.history.push('/'); //redirect user back to home route
   }
@@ -90,7 +92,7 @@ export default class UserSignUp extends Component {
         lastName,
         emailAddress,
         password,
-        confirmPassword,
+        confirmedPassword,
         errors
       } = this.state;
 
@@ -104,40 +106,40 @@ export default class UserSignUp extends Component {
           submitButtonText="Sign Up"
           elements={() => (
             <React.Fragment>
-              <label for="firstName">First Name</label>
+              <label htmlFor="firstName">First Name</label>
               <input
                 id="firstName"
                 name="firstName"
                 type="text"
                 value={firstName}
                 onChange={this.change} />
-              <label for="lastName">Last Name</label>
+              <label htmlFor="lastName">Last Name</label>
               <input
                 id="lastName"
                 name="lastName"
                 type="text"
                 value={lastName}
                 onChange={this.change} />
-              <label for="emailAddress">Email Address</label>
+              <label htmlFor="emailAddress">Email Address</label>
               <input
                 id="emailAddress"
                 name="emailAddress"
                 type="email"
                 value={emailAddress}
                 onChange={this.change} />
-              <label for="password">Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 id="password"
                 name="password"
                 type="password"
                 value={password}
                 onChange={this.change} />
-              <label for="confirmPassword">Confirm Password</label>
+              <label htmlFor="confirmPassword">Confirm Password</label>
               <input
                 id="confirmPassword"
-                name="confirmPassword"
+                name="confirmedPassword"
                 type="password"
-                value={confirmPassword}
+                value={confirmedPassword}
                 onChange={this.change} />
             </React.Fragment>
           )} />

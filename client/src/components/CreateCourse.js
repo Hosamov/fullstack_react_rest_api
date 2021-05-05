@@ -26,6 +26,8 @@ export default class CreateCourse extends Component {
       errors
     } = this.state;
 
+    //TODO: use markdown formatted text for materialsNeeded and description properties
+
     return(
       <div className="wrap">
         <Form

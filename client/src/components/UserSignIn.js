@@ -59,7 +59,7 @@ export default class UserSignIn extends Component {
 
     return (
       <div className="form--centered">
-        <h2>Sign In</h2>
+
          <Form
            cancel={this.cancel}
            errors={errors}
@@ -67,14 +67,15 @@ export default class UserSignIn extends Component {
            submitButtonText="Sign In"
            elements={() => (
              <React.Fragment>
-               <label for="emailAddress">Email Address</label>
+               <h2>Sign In</h2>
+               <label htmlFor="emailAddress">Email Address</label>
                <input
                  id="emailAddress"
                  name="emailAddress"
                  type="text"
                  value={emailAddress}
                  onChange={this.change} />
-               <label for="password">Password</label>
+               <label htmlFor="password">Password</label>
                <input
                  id="password"
                  name="password"

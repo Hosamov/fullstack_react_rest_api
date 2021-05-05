@@ -16,7 +16,7 @@ import UserSignUp from './components/UserSignUp';
 import UserSignOut from './components/UserSignOut';
 
 import withContext from './Context';
-import PrivateRoute from './PrivateRoute'; //for authenticated users only
+import PrivateRoute from './PrivateRoute'; //used by /courses/create & /coures/:id/update
 
 //add context
 const HeaderWithContext = withContext(Header);
@@ -28,6 +28,10 @@ const UserSignInWithContext = withContext(UserSignIn);
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignOutWithContext = withContext(UserSignOut);
 
+
+//TODO: Check entire app for syntax errors
+//TODO: Add detailed code comments explaining how app functions work
+
 const App = () => (
     <Router>
       <div>
@@ -36,12 +40,12 @@ const App = () => (
           <Switch>
             <Route exact path="/"> <Redirect to="/courses"/> </Route>
             <PrivateRoute exact path='/courses/create' component={CreateCourseWithContext} />
-            <PrivateRoute exact path='/courses/:id/update' component={UpdateCourseWithContext} />
+            <PrivateRoute path='/courses/:id/update' component={UpdateCourseWithContext} />
             <Route exact path='/courses' component={CoursesWithContext} />
             <Route exact path='/courses/:id' component={CourseDetailWithContext} />
-            <Route exact path='/signin' component={UserSignInWithContext} />
-            <Route exact path='/signup' component={UserSignUpWithContext} />
-            <Route exact path='/signout' component={UserSignOutWithContext} />
+            <Route path='/signin' component={UserSignInWithContext} />
+            <Route path='/signup' component={UserSignUpWithContext} />
+            <Route path='/signout' component={UserSignOutWithContext} />
           </Switch>
       </div>
     </Router>
