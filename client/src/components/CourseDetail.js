@@ -4,7 +4,8 @@
 */
 import React, {Component} from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown'; //import ReactMarkdown for adding markdown to description & materialsNeeded properties
+//allow user to add markdown to description and materialsNeeded fields
+import ReactMarkdown from 'react-markdown'; //https://github.com/remarkjs/react-markdown
 
 const url = "http://localhost:5000/api"; //url for REST API
 
@@ -37,14 +38,16 @@ export default class CourseDetail extends Component {
     })
   }
 
+  // Method for deleting a course from the database
   deleteCourse = async () => {
     const {context, history} = this.props;
-    const {emailAddress, password} = context.authenticatedUser; //use valid credentials to delete a course
+    const {emailAddress, password} = context.authenticatedUser; //retrieve authenticated email and password from context
     const id = this.props.match.params.id; //target the id param
 
     await context.data.deleteCourse(id, emailAddress, password)
     .then(errors => {
       if(errors.length) {
+        //if there was an error, log it out and set error state appropriately
         console.log(errors);
         this.setState({ errors });
       } else {
@@ -54,7 +57,7 @@ export default class CourseDetail extends Component {
     })
     .catch((error) => {
       console.log(error);
-      history.push('error');
+      history.push('/error'); //forward to UnhandledError route
     })
   }
 
@@ -63,8 +66,6 @@ export default class CourseDetail extends Component {
     const {course, author} = this.state;
     const authUser = context.authenticatedUser; //used to verify is author has authorization to update or delete the course
     const id = this.props.match.params.id;
-
-    //TODO: Add ReactMarkdown to description & materialsNeeded properties
 
     return (
       <>
@@ -90,18 +91,16 @@ export default class CourseDetail extends Component {
                           <h3 className="course--detail--title">Course</h3>
                           <h4 className="course--name">{course.title}</h4>
                           <p>By {`${author.firstName} ${author.lastName}`}</p>
-                          <ReactMarkdown>
-                            {course.description}
-                          </ReactMarkdown>
+                          <ReactMarkdown>{course.description}</ReactMarkdown>
                       </div>
                       <div>
                           <h3 className="course--detail--title">Estimated Time</h3>
                           <p>{course.estimatedTime}</p>
 
                           <h3 className="course--detail--title">Materials Needed</h3>
-                          <ReactMarkdown className="course--detail--list">
-                            {course.materialsNeeded}
-                          </ReactMarkdown>
+                          <ul className="course--detail--list">
+                            <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown>
+                          </ul>
                       </div>
                   </div>
               </form>

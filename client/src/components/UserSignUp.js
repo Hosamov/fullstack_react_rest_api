@@ -13,8 +13,6 @@ export default class UserSignUp extends Component {
     errors: []
   }
 
-
-
   submit = () => {
     const { context } = this.props; //destructuring to extract context from props
 

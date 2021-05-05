@@ -14,6 +14,10 @@ import CreateCourse from './components/CreateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import UserSignOut from './components/UserSignOut';
+//error routes:
+import Forbidden from './components/Forbidden';
+import NotFound from './components/NotFound';
+import UnhandledError from './components/UnhandledError';
 
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute'; //used by /courses/create & /coures/:id/update
@@ -28,8 +32,6 @@ const UserSignInWithContext = withContext(UserSignIn);
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignOutWithContext = withContext(UserSignOut);
 
-
-//TODO: Check entire app for syntax errors
 //TODO: Add detailed code comments explaining how app functions work
 
 const App = () => (
@@ -46,6 +48,10 @@ const App = () => (
             <Route path='/signin' component={UserSignInWithContext} />
             <Route path='/signup' component={UserSignUpWithContext} />
             <Route path='/signout' component={UserSignOutWithContext} />
+
+            <Route path='/forbidden' component={Forbidden} />
+            <Route path='/notfound' component={NotFound} />
+            <Route path='/error' component={UnhandledError} />
           </Switch>
       </div>
     </Router>
