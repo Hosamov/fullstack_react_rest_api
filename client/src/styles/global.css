@@ -29,7 +29,8 @@ a {
     padding: 0 1rem;
 }
 header {
-    background: #57496e;
+    /* background: #57496e; */
+    background: #7868e6;
     color: #fff;
     padding: 1rem 0;
     margin-bottom: 2rem;
@@ -47,10 +48,10 @@ header li {
     font-size: .8rem;
 }
 header nav a {
-    color: #dbd;
+    color: #fff;
 }
 header nav a:hover {
-    color: #fff;
+    color: #edeef7;
 }
 
 .header--signedin li {
@@ -62,12 +63,24 @@ header nav a:hover {
     margin-left: .5rem;
 }
 .course--module {
-    background: #7c689b;
+    /* background: #7c689b; */
+    background: #7868e6;
     border-radius: .5rem;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     display: block;
 }
+.course--link {
+  background: #7868e6;
+  border-radius: .5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.course--link:hover {
+  background: #9f9bff;
+}
+
 .course--label {
     color: #fff;
     font-size: .9rem;
@@ -80,16 +93,24 @@ header nav a:hover {
     font-size: 1.25rem;
 }
 .course--add--module {
-    background: #ddd9e4;
-    color: #57496e;
+    /* background: #ddd9e4; */
+    background: #edeef7;
+    /* color: #57496e; */
+    color: #7868e6;
+    box-shadow: 0 0 0 2px #7868e6 inset;
     font-weight: 300;
     font-size: 1.25rem;
+}
+
+.course--add--module:hover {
+  box-shadow: 0 0 0 2px #b8b5ff inset;
 }
 .course--add--title .add {
     width: 20px;
     height: auto;
     margin-right: 5px;
-    fill: #57496e;
+    /* fill: #57496e; */
+    fill: #7868e6;
 }
 .course--detail--title {
     padding-bottom: .25rem;
@@ -112,7 +133,8 @@ header nav a:hover {
     line-height: 1.5;
 }
 .actions--bar {
-    background: #e9e5f0;
+    /* background: #e9e5f0; */
+    background: #edeef7;
     padding: 1rem 0;
     margin: -2rem 0 2rem;
 }
@@ -167,7 +189,8 @@ textarea {
     min-height: 300px;
 }
 .button {
-    background: #7c689b;
+    /* background: #7c689b; */
+    background: #7868e6;
     color: #fff;
     font-size: 1rem;
     padding: .75rem 1.5rem;
@@ -184,18 +207,24 @@ textarea {
     margin-bottom: 0;
 }
 .button:not(.button-secondary):hover {
-    background: #63537d;
+    /* background: #63537d; */
+    background: #b8b5ff;
+    color: #7868e6;
     cursor: pointer;
 }
 .button-secondary {
-    color: #7c689b;
+    /* color: #7c689b; */
+    color: #7868e6;
     background: none;
-    box-shadow: 0 0 0 2px #7c689b inset;
+    box-shadow: 0 0 0 2px #7868e6 inset;
+    /* box-shadow: 0 0 0 2px #7c689b inset; */
     transition: box-shadow 0.2s, color 0.2s;
 }
 .button-secondary:hover {
-    color: #63537d;
-    box-shadow: 0 0 0 2px #63537d inset;
+    /* color: #63537d; */
+    color: #9b90ed;
+    /* box-shadow: 0 0 0 2px #63537d inset; */
+    box-shadow: 0 0 0 2px #9b90ed inset;
     cursor: pointer;
 }
 input:focus, button:focus, .button:focus, textarea:focus {
