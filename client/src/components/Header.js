@@ -1,12 +1,16 @@
-//Stateless Component
+/*
+* Header Component
+* Stateless
+* Renders a global Header for the app
+*/
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = (props) => {
-  const { context } = props;
-  const authUser = context.authenticatedUser;
+  const { context } = props; //import context
+  const authUser = context.authenticatedUser; //import user data from context
   let name;
-  if(authUser) {
+  if(authUser) { //check if a user is successfully logged in and render their name in the header
     name = `${authUser.firstName} ${authUser.lastName}`;
   } else {
     name = {}

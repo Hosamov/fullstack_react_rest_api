@@ -1,13 +1,15 @@
-//Stateful Component
+/*
+* UserSignIn Component
+* Stateful component
+* Renders input elements for creating a new authorized use to the app.
+*/
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'; // used for linking to /signup route
 import Form from './Form';
 
 export default class UserSignIn extends Component {
-
-  //set state
   state = {
-    emailAddress: '', //emailAddress = 'username'
+    emailAddress: '',
     password: '',
     errors: [],
   }
@@ -23,11 +25,10 @@ export default class UserSignIn extends Component {
     });
   }
 
-
   submit = () => {
-    const { context } = this.props; //destructuring to extract context from props
-    const { emailAddress, password } = this.state; //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
-    const { from } = this.props.location.state || { from: { pathname: '/courses' } };
+    const { context } = this.props; //extract context from props in order to get data from the global state
+    const { emailAddress, password } = this.state; // extract needed user data to pass into context.actions.signIn.
+    const { from } = this.props.location.state || { from: { pathname: '/courses' } }; //redirect user back to previous screen after successful login
 
       context.actions.signIn(emailAddress, password)
 
@@ -37,7 +38,8 @@ export default class UserSignIn extends Component {
               return { errors: ['log-in unsuccessful.'] };
             })
           } else {
-            this.props.history.push(from) //navigate user to home/courses route
+            this.props.history.push(from) //navigate user to previous screen
+            console.log(`SUCCESS! ${emailAddress} is now signed in!`)
           }
         })
       .catch(err => {

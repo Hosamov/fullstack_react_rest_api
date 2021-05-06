@@ -1,4 +1,8 @@
-//Stateful Component
+/*
+* UserSignUp Component
+* Stateful component
+* Renders input elements for logging into the app
+*/
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'; // used for linking to /signin route
 import Form from './Form';
@@ -14,10 +18,9 @@ export default class UserSignUp extends Component {
   }
 
   submit = () => {
-    const { context } = this.props; //destructuring to extract context from props
+    const { context } = this.props; //extract context from props in order to get data from the global state
 
-    //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
-    const {
+    const { //unpack properties from state object to use during form submit
       firstName,
       lastName,
       emailAddress,
@@ -25,8 +28,7 @@ export default class UserSignUp extends Component {
       confirmedPassword
     } = this.state;
 
-    //new user payload
-    const user = { //new user payload to be passed to the createUser() method
+    const user = { // Combine properties from state to pass into context.data.createUser()
       firstName,
       lastName,
       emailAddress,
@@ -34,13 +36,13 @@ export default class UserSignUp extends Component {
       confirmedPassword
     };
 
-    //Ensure password and confirmPassword are the same before creating the user
-    if(password === confirmedPassword) {
+    //Ensure password and confirmPassword are the same before proceeding to creating the new user
+    if(password === confirmedPassword) { //ensure passwords match
       //create new user
-      context.data.createUser(user) //return a promise
+      context.data.createUser(user)
         .then( errors => {
           if (errors.length) { //check if returned promise is an array of errors.
-            this.setState({ errors }); //set state to the array of errors
+              this.setState({ errors }); // set state to the array of errors
           } else {
             console.log(`${emailAddress} is successfully signed up and authenticated!`); //log out that user has successfully been authenticated
 
@@ -48,7 +50,7 @@ export default class UserSignUp extends Component {
               .then((user) => {
                 if(user === null) {
                   this.setState(() => {
-                    return { errors: ['Login unsuccessful']};
+                    return { errors: ["User unable to login"]}
                   })
                 } else {
                   this.props.history.push('/') //navigate user to home/courses route
@@ -58,12 +60,12 @@ export default class UserSignUp extends Component {
         })
         .catch ((err) => { //handle rejected promises
           console.log(err);
-          this.props.history.push('/error'); //push to history stack
+          this.props.history.push('/error');
         })
     } else {
       //let user know passwords must match
       this.setState(() => {
-        return { errors: ["Passwords don't match."]};
+        return { errors: ["Password & Confirmed Password must match."] };
       })
     }
 

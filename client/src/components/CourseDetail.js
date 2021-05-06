@@ -1,9 +1,10 @@
 /*
-// Statefull Component
-// Get and render details of each course from the REST API DB
+// CourseDetail Component
+// Stateful
+// Gets and renders details of each course from the REST API db
 */
 import React, {Component} from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 //allow user to add markdown to description and materialsNeeded fields
 import ReactMarkdown from 'react-markdown'; //https://github.com/remarkjs/react-markdown
 
@@ -24,17 +25,18 @@ export default class CourseDetail extends Component {
     fetch(`${url}/courses/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        const courseData = data.course[0];
-        const userData = data.course[0].User;
-
-        //set state of course and author to be used during render()
-        this.setState({
-          course: courseData,
-          author: userData,
-        })
+        if(data.course.length > 0) { //check if course data is available
+          //if data available, set state of course and author to be used during render()
+          this.setState({
+            course: data.course[0],
+            author: data.course[0].User,
+          })
+        } else { //if course doesn't exist, redirect user to /notfound path
+          this.props.history.push('/notfound');
+        }
       })
       .catch(error => {
-        <Redirect to="/error" />
+        this.props.history.push('/error');
     })
   }
 
@@ -86,6 +88,7 @@ export default class CourseDetail extends Component {
           <div className="wrap">
               <h2>Course Detail</h2>
               <form>
+                { course ?
                   <div className="main--flex">
                       <div>
                           <h3 className="course--detail--title">Course</h3>
@@ -102,7 +105,7 @@ export default class CourseDetail extends Component {
                             <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown>
                           </ul>
                       </div>
-                  </div>
+                  </div> : <h3>Loading...</h3> }
               </form>
           </div>
         </>

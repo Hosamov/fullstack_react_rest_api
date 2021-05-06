@@ -1,8 +1,12 @@
-//Stateful Component
+/*
+* UpdateCourse Component
+* Stateful component
+* Private Route, renders input elements for updating the current selected course
+*/
 import React, { Component } from 'react';
 import Form from './Form';
 
-const url = "http://localhost:5000/api";
+const url = "http://localhost:5000/api"; //url for REST API
 
 export default class UpdateCourse extends Component {
   state = {
@@ -19,12 +23,14 @@ export default class UpdateCourse extends Component {
     const id = this.props.match.params.id; //target the id param
     console.log(id);
 
-    //use Fetch API to get course data to update
+    //use Fetch API to get course data needed to update
     fetch(`${url}/courses/${id}`)
       .then((response) => response.json())
       .then((data) => {
         const courseData = data.course[0];
+        if(courseData !== undefined) { //check if there is courseData to update
           this.setState({
+            //set state of fetched data
             title: courseData.title,
             author: courseData.author,
             description: courseData.description,
@@ -32,6 +38,9 @@ export default class UpdateCourse extends Component {
             materialsNeeded: courseData.materialsNeeded,
             userId: courseData.userId,
           })
+        } else { //if there is no courseData, redirect user to /notfound path
+          this.props.history.push('/notfound');
+        }
       })
       .catch(error => {
         console.log('Error fetching and parsing data from database ', error);
@@ -39,9 +48,9 @@ export default class UpdateCourse extends Component {
   }
 
   render() {
-    const authUser = this.props.context.authenticatedUser;
+    const authUser = this.props.context.authenticatedUser; //use context to locate authenticatedUser
     const author = `${authUser.firstName} ${authUser.lastName}`;
-    const {
+    const { //unpack properties from state object to use during render
       title,
       description,
       estimatedTime,
@@ -123,22 +132,20 @@ export default class UpdateCourse extends Component {
   }
 
   submit = () => {
-    const { context } = this.props; //extract context from props
-    const {emailAddress, password} = context.authenticatedUser;
-    const userId = context.authenticatedUser.id;
+    const { context } = this.props; //extract context from props in order to get data from the global state
+    const {emailAddress, password} = context.authenticatedUser; // extract needed user auth data to pass into context.data.createCourse
+    const userId = context.authenticatedUser.id; //id of the authenticateduser
 
-    const id = this.props.match.params.id; //target the id param
+    const id = this.props.match.params.id; //target the :id param
 
-    //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
-    const {
+    const { //unpack properties from state object to use during form submit
       title,
       description,
       estimatedTime,
       materialsNeeded,
     } = this.state;
 
-    //new course payload
-    const course = { // to be passed to createCourse() method
+    const course = { // Combine properties from state to pass into context.data.updateCourse()
       title,
       description,
       estimatedTime,
@@ -151,15 +158,15 @@ export default class UpdateCourse extends Component {
           if(errors.length) {
             this.setState({ errors });
           } else {
-            console.log(`Course: ${course.title} successfully updated.`);
+            console.log(`Course successfully updated: ${course.title}`);
             this.props.history.push('/') //navigate user to home/courses route
           }
         })
       .catch(err => {
-        if(err === 401) {
+        //handle errors
+        console.log({err});
+        if(err.status === 403) { // unauthorized
           this.props.history.push('/forbidden');
-        } else if (err === 404) {
-          this.props.history.push('/notfound');
         } else {
           console.log(err);
           this.props.history.push('/error');

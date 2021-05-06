@@ -1,6 +1,6 @@
 /*
-// Stateless Component
-// Sign out the authorized user
+* Stateless Component
+* Signs out currently logged-in authenticated user
 */
 import React, { useEffect } from 'react'; //import useEffect
 import { Redirect } from 'react-router-dom';

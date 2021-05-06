@@ -1,18 +1,17 @@
 /*
-// Stateful Component
-// Courses() function to fetch a list of courses from the REST API db
-// This component is different from the others as it uses a function rather than
-// a class.
+* Courses Component
+* Stateful
+* Courses() function to fetch a list of courses from the REST API db
+* This component is different from the others as it uses a function rather than a class.
 */
-
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Context } from '../Context'; //import context here as we're using a function instead of class
 
 function Courses(props) {
   const context = useContext(Context);
-  const [courses, setCourses] = useState([]);
   const [canFetch, setCanFetch] = useState(true); //setup state to track/allow fetching of courses data
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const getCourses = async () => {

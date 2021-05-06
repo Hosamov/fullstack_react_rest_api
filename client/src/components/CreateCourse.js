@@ -1,7 +1,7 @@
 /*
-//Create Course
-//Stateful component
-//Private Route
+* Create Course
+* Stateful component
+* Private Route, renders input elements for adding a new course to the app
 */
 import React, { Component } from 'react';
 import Form from './Form';
@@ -16,17 +16,15 @@ export default class CreateCourse extends Component {
   }
 
   render() {
-    const authUser = this.props.context.authenticatedUser;
+    const authUser = this.props.context.authenticatedUser; //use context to locate authenticatedUser
     const author = `${authUser.firstName} ${authUser.lastName}`;
-    const {
+    const { //unpack properties from state object to use during render
       title,
       description,
       estimatedTime,
       materialsNeeded,
       errors
     } = this.state;
-
-    //TODO: use markdown formatted text for materialsNeeded and description properties
 
     return(
       <div className="wrap">
@@ -102,20 +100,19 @@ export default class CreateCourse extends Component {
   }
 
   submit = () => {
-    const { context } = this.props; //extract context from props
-    const {emailAddress, password, id} = context.authenticatedUser;
+    const { context } = this.props; //extract context from props in order to get data from the global state
+    const {emailAddress, password, id} = context.authenticatedUser; // extract needed user data to pass into context.data.createCourse
     const userId = id;
 
-    //Unpack properties from state into distinct variables, makes submit handler cleaner and easier to understand
-    const {
+    const { //unpack properties from state object to use during form submit
       title,
       description,
       estimatedTime,
       materialsNeeded
     } = this.state;
 
-    //new course payload
-    const course = { // to be passed to createCourse() method
+    // Combine properties from state to pass into context.data.createCourse()
+    const course = {
       title,
       description,
       estimatedTime,
@@ -123,19 +120,21 @@ export default class CreateCourse extends Component {
       userId
     };
 
+      // Create a new course within the database
       context.data.createCourse(course, emailAddress, password)
         .then(errors => {
           if(errors.length) {
             this.setState({ errors });
           } else {
-            console.log(`New course: ${course.title} was created.`);
-            this.props.history.push('/') //navigate user to home/courses route
+            console.log(`New course successfully created: ${title}`);
+            this.props.history.push('/') //navigate user to home (/) route
           }
         })
       .catch(err => {
-        if(err === 401) {
+        //handle errors
+        if(err === 401) { //unauthorized
           this.props.history.push('/forbidden');
-        } else if (err === 404) {
+        } else if (err === 404) { //page not found
           this.props.history.push('/notfound');
         } else {
           console.log(err);
