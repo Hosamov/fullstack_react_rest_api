@@ -129,7 +129,8 @@ export default class UpdateCourse extends Component {
   }
 
   cancel = () => {
-    this.props.history.push('/'); //redirect user back to home route
+    const id = this.props.match.params.id; //target the id param
+    this.props.history.push(`/courses/${id}`); //redirect user back to the CourseDetail page of the selected course
   }
 
   submit = () => {
