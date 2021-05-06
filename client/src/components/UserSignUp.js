@@ -65,7 +65,7 @@ export default class UserSignUp extends Component {
     } else {
       //let user know passwords must match
       this.setState(() => {
-        return { errors: ["Password & Confirmed Password must match."] };
+        return { errors: ["Both password fields must match."] };
       })
     }
 

@@ -11,7 +11,7 @@ const url = "http://localhost:5000/api"; //url for REST API
 export default class UpdateCourse extends Component {
   state = {
     title: '',
-    author: '',
+    courseAuthor: '',
     description: '',
     estimatedTime: '',
     materialsNeeded: '',
@@ -21,29 +21,30 @@ export default class UpdateCourse extends Component {
 
   componentDidMount() {
     const id = this.props.match.params.id; //target the id param
-    console.log(id);
+    const authUser = this.props.context.authenticatedUser.id;
 
     //use Fetch API to get course data needed to update
     fetch(`${url}/courses/${id}`)
       .then((response) => response.json())
       .then((data) => {
         const courseData = data.course[0];
-        if(courseData !== undefined) { //check if there is courseData to update
+        //console.log(courseData.User.id);
           this.setState({
             //set state of fetched data
             title: courseData.title,
-            author: courseData.author,
+            courseAuthor: courseData.author,
             description: courseData.description,
             estimatedTime: courseData.estimatedTime,
             materialsNeeded: courseData.materialsNeeded,
-            userId: courseData.userId,
+            userId: courseData.User.id,
           })
-        } else { //if there is no courseData, redirect user to /notfound path
-          this.props.history.push('/notfound');
-        }
+          if(this.state.userId !== authUser) { //check to ensure the current user has authorization to edit the course
+            this.props.history.push('/forbidden');
+          }
       })
       .catch(error => {
-        console.log('Error fetching and parsing data from database ', error);
+        console.log('Course could not be found ', error);
+        this.props.history.push('/notfound');
       })
   }
 
@@ -163,14 +164,8 @@ export default class UpdateCourse extends Component {
           }
         })
       .catch(err => {
-        //handle errors
-        console.log({err});
-        if(err.status === 403) { // unauthorized
-          this.props.history.push('/forbidden');
-        } else {
-          console.log(err);
-          this.props.history.push('/error');
-        }
+        console.log(err);
+        this.props.history.push('/error'); //for unhandled error
       })
   }
 }

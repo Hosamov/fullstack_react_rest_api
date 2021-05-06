@@ -31,7 +31,6 @@ export default class UserSignIn extends Component {
     const { from } = this.props.location.state || { from: { pathname: '/courses' } }; //redirect user back to previous screen after successful login
 
       context.actions.signIn(emailAddress, password)
-
         .then((user) => {
           if(user === null) {
             this.setState(() => {
@@ -44,7 +43,7 @@ export default class UserSignIn extends Component {
         })
       .catch(err => {
         console.log(err);
-        this.props.history.push('/error');
+        this.props.history.push('/error'); //forward to UnhandledError route
       })
   }
 

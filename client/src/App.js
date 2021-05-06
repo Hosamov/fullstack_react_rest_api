@@ -52,6 +52,8 @@ const App = () => (
             <Route path='/forbidden' component={Forbidden} />
             <Route path='/error' component={UnhandledError} />
 
+            <Route component={NotFound} /> {/*Redirect to /notfound route if route isn't found*/}
+
           </Switch>
       </div>
     </Router>

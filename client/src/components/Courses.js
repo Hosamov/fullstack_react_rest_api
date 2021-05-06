@@ -21,13 +21,13 @@ function Courses(props) {
           if(response.courses.length > 0) { //ensure there are existing courses
             setCourses(response.courses) //add response data to courses state
           } else {
-            <Redirect to="/error" /> //if no course data exists, send to /error route
+            <Redirect to="/notfound" /> //if no course data exists, send to /notfound route
           }
 
         })
         .catch(error => {
           console.log('Error fetching and parsing data from database ', error);
-          <Redirect to="/error" />
+          <Redirect to="/error" /> //forward to UnhandledError route
         });
     }
       //check if getCourses can load

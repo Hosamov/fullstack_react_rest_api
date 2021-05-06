@@ -131,15 +131,8 @@ export default class CreateCourse extends Component {
           }
         })
       .catch(err => {
-        //handle errors
-        if(err === 401) { //unauthorized
-          this.props.history.push('/forbidden');
-        } else if (err === 404) { //page not found
-          this.props.history.push('/notfound');
-        } else {
-          console.log(err);
-          this.props.history.push('/error');
-        }
+        console.log(err);
+        this.props.history.push('/error'); //forward to UnhandledError route
       })
   }
 }
